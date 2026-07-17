@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling>=1.25,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "materials-structure-core"
+version = "0.0.1"
+description = "Validated structure contracts and provenance for materials research software"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26,<3"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10", "build>=1.2,<2", "twine>=5,<7"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/materials_structure_core"]
