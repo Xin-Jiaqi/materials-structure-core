@@ -1,0 +1,12 @@
+synthetic selective dynamics
+1.0
+3.0 0.0 0.0
+0.0 3.0 0.0
+0.0 0.0 12.0
+C H
+1 2
+Selective dynamics
+Direct
+0.0 0.0 0.5 F F F
+0.2 0.2 0.5 T F T
+0.8 0.8 0.5 T T T
