@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "license": "Repository license status applies; fixtures are synthetic and self-authored.",
+  "fixtures": [
+    {
+      "id": "poscar-cartesian-positive-scale-v1",
+      "path": "POSCAR_cartesian_scaled.vasp",
+      "sha256": "77210ec501ee4dcbdb44a6806d6e156d540048b925290a01a61823550591bd3a",
+      "expected": ["positive scale applies to lattice", "positive scale applies to Cartesian positions"]
+    },
+    {
+      "id": "poscar-direct-positive-scale-triclinic-v1",
+      "path": "POSCAR_direct_scaled.vasp",
+      "sha256": "88c8aa4f2761cf4c0be485905f99f8ea49ce6747f7537f12b0ddcfd143a6a211",
+      "expected": ["positive scale applies to lattice", "fractional positions remain dimensionless", "site order preserved"]
+    },
+    {
+      "id": "poscar-negative-target-volume-v1",
+      "path": "POSCAR_negative_volume.vasp",
+      "sha256": "d031ebf6e63ff692cdf4b431beb85f7f3036e413573182dcd9b79a28372972eb",
+      "expected": ["negative scale denotes target cell volume", "fractional positions remain dimensionless"]
+    },
+    {
+      "id": "poscar-selective-dynamics-v1",
+      "path": "POSCAR_selective.vasp",
+      "sha256": "9d94950a2a8061ffa8673dd270f7eef424d896432f208a907232ca7fca62972d",
+      "expected": ["T means motion allowed", "F means motion fixed", "mixed and fully fixed sites round-trip"]
+    }
+  ]
+}

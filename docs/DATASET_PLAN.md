@@ -14,6 +14,19 @@ Fixtures must be synthetic, self-authored, or clearly redistributable. Each fixt
 - same formula with distinct structures to prevent filename collisions;
 - malformed count, singular lattice, non-finite coordinate, and truncated input cases.
 
+Implemented in `tests/fixtures/manifest.json` for the `0.0.2` integration candidate:
+
+- [x] VASP 5 Direct with positive non-unit scale and a triclinic cell;
+- [x] VASP 5 Cartesian with positive non-unit scale;
+- [x] negative target-volume scale;
+- [x] mixed and fully fixed Selective-dynamics flags;
+- [x] POSCAR Direct/Cartesian write-read paths;
+- [x] a programmatically generated unconstrained CIF round trip;
+- [ ] VASP 4 with caller-supplied species names;
+- [x] malformed/truncated POSCAR rejection cases;
+- [ ] velocities/predictor-corrector preservation policy;
+- [ ] warning-capture expectations for upstream parser diagnostics.
+
 ## Dimensional matrix
 
 - synthetic cubic, bcc, fcc, tetragonal, orthorhombic, monoclinic, triclinic, trigonal, and hexagonal bulk prototypes;

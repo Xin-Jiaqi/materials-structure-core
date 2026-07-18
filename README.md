@@ -2,7 +2,7 @@
 
 Contract-first foundations for reproducible crystal-structure software.
 
-This bootstrap release defines a validated `StructureRecord`, explicit fractional/Cartesian conversion, periodic wrapping, an order-sensitive structure hash, and a serializable provenance manifest. POSCAR/CIF adapters are deliberately not included yet: they will be added only with golden round-trip fixtures for scale-factor, coordinate-mode, species-order, and Selective-dynamics semantics.
+This pre-release defines a validated `StructureRecord`, explicit fractional/Cartesian conversion, periodic wrapping, an order-sensitive structure hash, and a serializable provenance manifest. Version `0.0.2` adds an opt-in ASE-backed POSCAR/CIF bridge with synthetic golden fixtures and explicit loss checks. It is a tested integration candidate, not yet a production converter.
 
 ## Why this repository exists
 
@@ -34,6 +34,19 @@ Coordinate convention: lattice vectors are rows and `cartesian = fractional @ la
 - PBC-aware wrapping and an order-sensitive, fixed-quantization content hash;
 - an output-bound provenance manifest and SHA-256 helper;
 - regression tests for numerical and immutability contracts.
+- ASE-backed POSCAR/CIF read/write adapters, provenance-friendly read results, and a small CLI;
+- direct/Cartesian, positive-scale, Selective-dynamics, POSCAR round-trip, and CIF round-trip fixtures;
+- refusal to silently discard unsupported ASE constraints, non-periodic PBC flags, or CIF Selective-dynamics flags.
+
+## Optional structure I/O
+
+```bash
+python -m pip install -e '.[io]'
+structure-core inspect POSCAR
+structure-core convert POSCAR structure.cif
+```
+
+The bridge intentionally delegates parsing to the maintained [ASE format implementation](https://wiki.fysik.dtu.dk/ase/ase/io/formatoptions.html#vasp). The current acceptance envelope and known gaps are documented in [I/O adapter contracts](docs/IO_ADAPTERS.md). Positive and negative scale semantics are fixture-tested. VASP 4 files without trustworthy species names and velocity/predictor-corrector blocks remain release blockers rather than silently accepted claims.
 
 ## Planned ownership
 
@@ -60,8 +73,8 @@ python -m pip install -e '.[test]'
 pytest
 ```
 
-See [the scientific contracts](docs/CONTRACTS.md), [fixture plan](docs/DATASET_PLAN.md), and [roadmap](ROADMAP.md).
+See [the scientific contracts](docs/CONTRACTS.md), [I/O adapter contracts](docs/IO_ADAPTERS.md), [fixture plan](docs/DATASET_PLAN.md), and [roadmap](ROADMAP.md).
 
 ## Status and rights
 
-Status: `bootstrap` / pre-alpha. Do not treat this version as a production POSCAR/CIF converter. No open-source license has been selected; public visibility does not grant reuse rights. Code, test data, documentation, and external examples require separate ownership/licensing review before v0.1.
+Status: `0.0.2` integration candidate / pre-alpha. Do not treat this version as a production POSCAR/CIF converter. No open-source license has been selected; public visibility does not grant reuse rights. Code, test data, documentation, and external examples require separate ownership/licensing review before v0.1.

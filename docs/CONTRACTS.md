@@ -33,4 +33,6 @@ A POSCAR or CIF adapter is accepted only when read/write/read round trips preser
 - POSCAR positive/negative/non-unit scale semantics;
 - provenance and original-file SHA-256.
 
-Unknown or unsupported fields must produce a warning/error record; they must not be silently discarded in a production path.
+Unknown or unsupported fields must produce a warning/error record; they must not be silently discarded in a production path. The v0 adapter rejects optional POSCAR velocity, lattice-velocity and predictor-corrector tails, partial/mixed CIF occupancy, and non-zero site charge data because the normalized model cannot preserve them.
+
+The `0.0.2` adapters implement this as a strict error for unsupported ASE constraints, POSCAR tail blocks, partial/mixed CIF occupancy, non-zero site charges, CIF Selective dynamics, and non-periodic PBC writes. See `IO_ADAPTERS.md` for the tested acceptance envelope; deferred cases remain explicit release blockers.
