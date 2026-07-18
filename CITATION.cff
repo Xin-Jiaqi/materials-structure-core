@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software in research, please cite this repository and the version used."
+type: software
+title: "materials-structure-core"
+version: 0.0.2
+authors:
+  - family-names: Xin
+    given-names: Jiaqi
+repository-code: "https://github.com/Xin-Jiaqi/materials-structure-core"
