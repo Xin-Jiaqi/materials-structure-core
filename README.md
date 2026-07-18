@@ -75,6 +75,8 @@ pytest
 
 See [the scientific contracts](docs/CONTRACTS.md), [I/O adapter contracts](docs/IO_ADAPTERS.md), [fixture plan](docs/DATASET_PLAN.md), and [roadmap](ROADMAP.md).
 
+For research use, cite the exact version using [`CITATION.cff`](CITATION.cff). A DOI or preferred paper citation will be added only when a corresponding release or publication exists.
+
 ## Status and rights
 
 Status: `0.0.2` integration candidate / pre-alpha. Do not treat this version as a production POSCAR/CIF converter. No open-source license has been selected; public visibility does not grant reuse rights. Code, test data, documentation, and external examples require separate ownership/licensing review before v0.1.
