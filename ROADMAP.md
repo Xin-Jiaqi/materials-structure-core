@@ -36,4 +36,4 @@
 
 ## Release gate
 
-No v0.1 release until code/data ownership is confirmed, a license decision is recorded, Python 3.10–3.12 CI passes, all format fixtures round-trip, and an independent reviewer verifies numerical conventions.
+The repository is licensed under BSD-3-Clause and its current fixtures are synthetic. A v0.1 release additionally requires Python 3.10–3.12 CI, complete format round trips, and independent verification of the numerical conventions.

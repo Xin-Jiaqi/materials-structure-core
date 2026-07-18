@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "license": "Repository license status applies; fixtures are synthetic and self-authored.",
+  "license": "BSD-3-Clause; fixtures are synthetic and self-authored.",
   "fixtures": [
     {
       "id": "poscar-cartesian-positive-scale-v1",

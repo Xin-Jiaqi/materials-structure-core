@@ -81,4 +81,4 @@ For research use, cite the exact version using [`CITATION.cff`](CITATION.cff). A
 
 ## Status and rights
 
-Status: `0.0.2` integration candidate / pre-alpha. Do not treat this version as a production POSCAR/CIF converter. No open-source license has been selected; public visibility does not grant reuse rights. Code, test data, documentation, and external examples require separate ownership/licensing review before v0.1.
+Status: `0.0.2` integration candidate / pre-alpha. Do not treat this version as a production POSCAR/CIF converter. Repository-authored code, documentation, and synthetic fixtures are available under the [BSD 3-Clause License](LICENSE).
