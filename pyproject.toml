@@ -6,6 +6,7 @@ build-backend = "hatchling.build"
 name = "materials-structure-core"
 version = "0.0.2"
 description = "Validated structure contracts and provenance for materials research software"
+authors = [{name = "Jiaqi Xin"}]
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = ["numpy>=1.26,<3"]
