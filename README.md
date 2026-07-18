@@ -1,5 +1,7 @@
 # materials-structure-core
 
+[![tests](https://github.com/Xin-Jiaqi/materials-structure-core/actions/workflows/tests.yml/badge.svg)](https://github.com/Xin-Jiaqi/materials-structure-core/actions/workflows/tests.yml)
+
 Contract-first foundations for reproducible crystal-structure software.
 
 This pre-release defines a validated `StructureRecord`, explicit fractional/Cartesian conversion, periodic wrapping, an order-sensitive structure hash, and a serializable provenance manifest. Version `0.0.2` adds an opt-in ASE-backed POSCAR/CIF bridge with synthetic golden fixtures and explicit loss checks. It is a tested integration candidate, not yet a production converter.
