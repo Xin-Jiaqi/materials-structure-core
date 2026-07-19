@@ -111,3 +111,21 @@ def test_sha256_file(tmp_path: Path) -> None:
         "ba7816bf8f01cfea414140de5dae2223"
         "b00361a396177a9cb410ff61f20015ad"
     )
+
+
+def test_manifest_json_file_round_trip_is_atomic_and_no_clobber(tmp_path: Path) -> None:
+    manifest = ProvenanceManifest(
+        source_uri="synthetic://fixture",
+        source_sha256="a" * 64,
+        result_structure_id="b" * 64,
+        created_at="2026-07-17T00:00:00Z",
+        producer="test",
+        transformations=(Transformation("wrap", {"axes": [0, 1]}),),
+    )
+    target = tmp_path / "manifest.json"
+    assert manifest.write_json(target) == target
+    assert ProvenanceManifest.read_json(target) == manifest
+    with pytest.raises(FileExistsError):
+        manifest.write_json(target)
+    assert manifest.write_json(target, overwrite=True) == target
+    assert list(tmp_path.glob("*.tmp")) == []

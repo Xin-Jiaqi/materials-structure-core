@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import hashlib
 import json
-from typing import Iterable, Sequence
+from typing import Any, Iterable, Mapping, Sequence
 
 import numpy as np
 import numpy.typing as npt
@@ -14,6 +14,7 @@ import numpy.typing as npt
 FloatArray = npt.NDArray[np.float64]
 _HASH_DECIMALS = 12
 ORDERED_HASH_SCHEMA = "materials-structure-core/ordered-hash-v1"
+STRUCTURE_RECORD_SCHEMA = "0.1"
 _MAX_LATTICE_CONDITION = 1.0e12
 
 
@@ -160,6 +161,44 @@ class StructureRecord:
 
     def cartesian_coordinates(self) -> FloatArray:
         return self.fractional_array() @ self.lattice_array()
+
+    def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-safe schema-v0.1 structure mapping."""
+
+        return {
+            "schema_version": STRUCTURE_RECORD_SCHEMA,
+            "lattice": [list(row) for row in self.lattice],
+            "species": list(self.species),
+            "fractional_coordinates": [list(row) for row in self.fractional_coordinates],
+            "pbc": list(self.pbc),
+            "selective_dynamics": (
+                None
+                if self.selective_dynamics is None
+                else [list(row) for row in self.selective_dynamics]
+            ),
+            "length_unit": self.length_unit,
+        }
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> StructureRecord:
+        """Construct and validate a structure from the public schema-v0.1 mapping."""
+
+        if not isinstance(value, Mapping):
+            raise ValueError("structure record must be a mapping")
+        if value.get("schema_version") != STRUCTURE_RECORD_SCHEMA:
+            raise ValueError(f"schema_version must be {STRUCTURE_RECORD_SCHEMA!r}")
+        required = {"lattice", "species", "fractional_coordinates"}
+        missing = sorted(required - value.keys())
+        if missing:
+            raise ValueError("structure record is missing: " + ", ".join(missing))
+        return cls.from_fractional(
+            lattice=value["lattice"],
+            species=value["species"],
+            fractional_coordinates=value["fractional_coordinates"],
+            pbc=value.get("pbc", (True, True, True)),
+            selective_dynamics=value.get("selective_dynamics"),
+            length_unit=value.get("length_unit", "angstrom"),
+        )
 
     def wrapped(self) -> StructureRecord:
         fractional = self.fractional_array()

@@ -1,6 +1,6 @@
 """Validated structure contracts for materials research software."""
 
-from .model import ORDERED_HASH_SCHEMA, StructureRecord
+from .model import ORDERED_HASH_SCHEMA, STRUCTURE_RECORD_SCHEMA, StructureRecord
 from .io import (
     StructureIOError,
     StructureReadResult,
@@ -14,6 +14,7 @@ from .provenance import ProvenanceManifest, Transformation, sha256_file
 __all__ = [
     "ProvenanceManifest",
     "ORDERED_HASH_SCHEMA",
+    "STRUCTURE_RECORD_SCHEMA",
     "StructureRecord",
     "StructureIOError",
     "StructureReadResult",
