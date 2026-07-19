@@ -7,7 +7,7 @@
 - [x] PBC-aware wrapping.
 - [x] Angstrom-only, fixed-quantization, order-sensitive deterministic content hash.
 - [x] Output-bound, JSON-safe immutable provenance manifest and file checksum helper.
-- [ ] Independent API and numerical review.
+- [x] Independent API and numerical review for the v0.0.2 candidate.
 
 ## v0.0.2 — maintained-backend I/O candidate
 
@@ -27,6 +27,7 @@
 - [ ] Add an optional CIF adapter and ASE/pymatgen bridges.
 - [ ] Add minimum-image distance, collisions, vacuum, layer thickness, and layer-spacing reports.
 - [ ] Publish a versioned JSON schema and compatibility policy.
+- [x] Add JSON-safe `StructureRecord`/`ProvenanceManifest` round trips and atomic manifest files.
 
 ## First consumers
 
@@ -36,4 +37,4 @@
 
 ## Release gate
 
-The repository is licensed under BSD-3-Clause and its current fixtures are synthetic. A v0.1 release additionally requires Python 3.10–3.12 CI, complete format round trips, and independent verification of the numerical conventions.
+The repository is licensed under BSD-3-Clause and its current fixtures are synthetic. A v0.1 release additionally requires Python 3.10 and latest-stable Python CI, complete format round trips, and independent verification of the numerical conventions.
