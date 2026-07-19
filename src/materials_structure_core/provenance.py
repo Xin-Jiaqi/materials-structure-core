@@ -6,8 +6,10 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
+import tempfile
 from types import MappingProxyType
 from typing import Any, Mapping
 
@@ -66,6 +68,15 @@ class Transformation:
 
     def to_dict(self) -> dict[str, Any]:
         return {"name": self.name, "parameters": _thaw_json(self.parameters)}
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> Transformation:
+        if not isinstance(value, Mapping):
+            raise ValueError("transformation must be a mapping")
+        try:
+            return cls(name=value["name"], parameters=value["parameters"])
+        except KeyError as exc:
+            raise ValueError(f"transformation is missing {exc.args[0]!r}") from exc
 
 
 @dataclass(frozen=True, slots=True)
@@ -130,6 +141,75 @@ class ProvenanceManifest:
             "parent_structure_id": self.parent_structure_id,
             "transformations": [item.to_dict() for item in self.transformations],
         }
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> ProvenanceManifest:
+        """Construct and validate a manifest from its public JSON mapping."""
+
+        if not isinstance(value, Mapping):
+            raise ValueError("manifest must be a mapping")
+        required = {
+            "source_uri",
+            "source_sha256",
+            "result_structure_id",
+            "created_at",
+            "producer",
+        }
+        missing = sorted(required - value.keys())
+        if missing:
+            raise ValueError("manifest is missing: " + ", ".join(missing))
+        transformations = value.get("transformations", ())
+        if not isinstance(transformations, (list, tuple)):
+            raise ValueError("transformations must be an array")
+        return cls(
+            source_uri=value["source_uri"],
+            source_sha256=value["source_sha256"],
+            result_structure_id=value["result_structure_id"],
+            created_at=value["created_at"],
+            producer=value["producer"],
+            parser=value.get("parser"),
+            parent_structure_id=value.get("parent_structure_id"),
+            transformations=tuple(
+                Transformation.from_dict(item) for item in transformations
+            ),
+            schema_version=value.get("schema_version", "0.1"),
+            hash_schema=value.get("hash_schema", ORDERED_HASH_SCHEMA),
+        )
+
+    @classmethod
+    def read_json(cls, path: str | Path) -> ProvenanceManifest:
+        """Read a manifest without accepting non-object JSON values."""
+
+        try:
+            value = json.loads(Path(path).read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"invalid manifest JSON: {exc}") from exc
+        return cls.from_dict(value)
+
+    def write_json(self, path: str | Path, *, overwrite: bool = False) -> Path:
+        """Atomically write a manifest, refusing replacement unless requested."""
+
+        target = Path(path)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if target.exists() and not overwrite:
+            raise FileExistsError(f"manifest already exists: {target}")
+        descriptor, temporary_name = tempfile.mkstemp(
+            prefix=f".{target.name}.", suffix=".tmp", dir=target.parent
+        )
+        temporary = Path(temporary_name)
+        try:
+            with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+                json.dump(self.to_dict(), handle, ensure_ascii=False, indent=2, sort_keys=True)
+                handle.write("\n")
+                handle.flush()
+                os.fsync(handle.fileno())
+            if target.exists() and not overwrite:
+                raise FileExistsError(f"manifest already exists: {target}")
+            os.replace(temporary, target)
+        except BaseException:
+            temporary.unlink(missing_ok=True)
+            raise
+        return target
 
 
 def sha256_file(path: str | Path, *, chunk_size: int = 1024 * 1024) -> str:
