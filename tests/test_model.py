@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+import json
 from dataclasses import FrozenInstanceError
 
 from materials_structure_core import StructureRecord
@@ -133,3 +134,22 @@ def test_ordered_hash_v1_golden_digest() -> None:
         "f6fb14183a0290b41c60a1ad7e05657"
         "f9ae6ab8924d0bd6d6e10105bd77cd169"
     )
+
+
+def test_structure_record_json_round_trip_preserves_contract() -> None:
+    structure = StructureRecord.from_fractional(
+        lattice=[[3, 0, 0], [0.2, 4, 0], [0, 0, 12]],
+        species=["B", "N"],
+        fractional_coordinates=[[0.1, 0.2, 0.3], [0.6, 0.7, 0.8]],
+        pbc=[True, True, False],
+        selective_dynamics=[[True, True, False], [False, False, True]],
+    )
+    payload = json.loads(json.dumps(structure.to_dict()))
+    restored = StructureRecord.from_dict(payload)
+    assert restored == structure
+    assert restored.ordered_hash() == structure.ordered_hash()
+
+
+def test_structure_record_from_dict_rejects_unknown_schema() -> None:
+    with pytest.raises(ValueError, match="schema_version"):
+        StructureRecord.from_dict({"schema_version": "99"})
