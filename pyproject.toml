@@ -18,11 +18,18 @@ structure-core = "materials_structure_core.cli:main"
 
 [project.optional-dependencies]
 io = ["ase>=3.23,<4"]
-test = ["ase>=3.23,<4", "pytest>=8,<10", "build>=1.2,<2", "twine>=5,<7"]
+test = ["ase>=3.23,<4", "pytest>=8,<10", "build>=1.2,<2", "twine>=5,<7", "mypy>=1.10"]
 
 [tool.pytest.ini_options]
 addopts = "-q"
 testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.10"
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+files = ["src"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/materials_structure_core"]

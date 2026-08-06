@@ -18,7 +18,7 @@ STRUCTURE_RECORD_SCHEMA = "0.1"
 _MAX_LATTICE_CONDITION = 1.0e12
 
 
-def _matrix3(values: Sequence[Sequence[float]], *, name: str) -> FloatArray:
+def _matrix3(values: Sequence[Sequence[float]] | FloatArray, *, name: str) -> FloatArray:
     array = np.asarray(values, dtype=np.float64)
     if array.shape != (3, 3):
         raise ValueError(f"{name} must have shape (3, 3), got {array.shape}")
@@ -27,7 +27,7 @@ def _matrix3(values: Sequence[Sequence[float]], *, name: str) -> FloatArray:
     return array
 
 
-def _coordinates(values: Sequence[Sequence[float]], *, name: str) -> FloatArray:
+def _coordinates(values: Sequence[Sequence[float]] | FloatArray, *, name: str) -> FloatArray:
     array = np.asarray(values, dtype=np.float64)
     if array.ndim != 2 or array.shape[1:] != (3,):
         raise ValueError(f"{name} must have shape (N, 3), got {array.shape}")
@@ -36,8 +36,8 @@ def _coordinates(values: Sequence[Sequence[float]], *, name: str) -> FloatArray:
     return array
 
 
-def _tuples(array: FloatArray) -> tuple[tuple[float, float, float], ...]:
-    return tuple(tuple(float(value) for value in row) for row in array)  # type: ignore[return-value]
+def _tuples(array: FloatArray) -> tuple[tuple[float, ...], ...]:
+    return tuple(tuple(float(value) for value in row) for row in array)
 
 
 @dataclass(frozen=True, slots=True)
@@ -48,9 +48,9 @@ class StructureRecord:
     ``fractional @ lattice``. Site order is meaningful and preserved.
     """
 
-    lattice: tuple[tuple[float, float, float], ...]
+    lattice: tuple[tuple[float, ...], ...]
     species: tuple[str, ...]
-    fractional_coordinates: tuple[tuple[float, float, float], ...]
+    fractional_coordinates: tuple[tuple[float, ...], ...]
     pbc: tuple[bool, bool, bool] = (True, True, True)
     selective_dynamics: tuple[tuple[bool, bool, bool], ...] | None = None
     length_unit: str = "angstrom"
@@ -102,9 +102,9 @@ class StructureRecord:
     def from_fractional(
         cls,
         *,
-        lattice: Sequence[Sequence[float]],
+        lattice: Sequence[Sequence[float]] | FloatArray,
         species: Iterable[str],
-        fractional_coordinates: Sequence[Sequence[float]],
+        fractional_coordinates: Sequence[Sequence[float]] | FloatArray,
         pbc: Sequence[bool] = (True, True, True),
         selective_dynamics: Sequence[Sequence[bool]] | None = None,
         length_unit: str = "angstrom",
