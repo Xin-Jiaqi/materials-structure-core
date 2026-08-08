@@ -9,6 +9,7 @@ from typing import Any, Iterable, Mapping, Sequence
 
 import numpy as np
 import numpy.typing as npt
+from typing import cast
 
 
 FloatArray = npt.NDArray[np.float64]
@@ -141,8 +142,10 @@ class StructureRecord:
         lattice_array = _matrix3(lattice, name="lattice")
         cartesian = _coordinates(cartesian_coordinates, name="cartesian_coordinates")
         try:
-            fractional = np.linalg.solve(lattice_array.T, cartesian.T).T
-            fractional = np.asarray(fractional, dtype=np.float64)
+            fractional = cast(
+                FloatArray,
+                np.linalg.solve(lattice_array.T, cartesian.T).T,
+            )
         except np.linalg.LinAlgError as exc:
             raise ValueError("lattice must be non-singular") from exc
         return cls.from_fractional(
