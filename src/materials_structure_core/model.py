@@ -5,11 +5,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 import hashlib
 import json
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Iterable, Mapping, Sequence, cast
 
 import numpy as np
 import numpy.typing as npt
-from typing import cast
 
 
 FloatArray = npt.NDArray[np.float64]
