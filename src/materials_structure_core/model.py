@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import hashlib
 import json
-from typing import Any, Iterable, Mapping, Sequence, cast
+from typing import Any, Iterable, Mapping, Sequence
 
 import numpy as np
 import numpy.typing as npt
@@ -141,9 +141,9 @@ class StructureRecord:
         lattice_array = _matrix3(lattice, name="lattice")
         cartesian = _coordinates(cartesian_coordinates, name="cartesian_coordinates")
         try:
-            fractional = cast(
-                FloatArray,
+            fractional = np.asarray(
                 np.linalg.solve(lattice_array.T, cartesian.T).T,
+                dtype=np.float64,
             )
         except np.linalg.LinAlgError as exc:
             raise ValueError("lattice must be non-singular") from exc
