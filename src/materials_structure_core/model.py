@@ -141,7 +141,10 @@ class StructureRecord:
         lattice_array = _matrix3(lattice, name="lattice")
         cartesian = _coordinates(cartesian_coordinates, name="cartesian_coordinates")
         try:
-            fractional = np.linalg.solve(lattice_array.T, cartesian.T).T
+            fractional = np.asarray(
+                np.linalg.solve(lattice_array.T, cartesian.T).T,
+                dtype=np.float64,
+            )
         except np.linalg.LinAlgError as exc:
             raise ValueError("lattice must be non-singular") from exc
         return cls.from_fractional(
