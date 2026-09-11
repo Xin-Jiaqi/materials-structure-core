@@ -10,8 +10,12 @@ from .io import (
     write_structure,
 )
 from .provenance import ProvenanceManifest, Transformation, sha256_file
+from .geometry import minimum_image_in_plane, plane_frame, reduced_plane_basis
 
 __all__ = [
+    "minimum_image_in_plane",
+    "plane_frame",
+    "reduced_plane_basis",
     "ProvenanceManifest",
     "ORDERED_HASH_SCHEMA",
     "STRUCTURE_RECORD_SCHEMA",
@@ -26,4 +30,4 @@ __all__ = [
     "write_structure",
 ]
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"

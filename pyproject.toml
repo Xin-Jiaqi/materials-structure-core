@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "materials-structure-core"
-version = "0.0.2"
+version = "0.0.3"
 description = "Validated structure contracts and provenance for materials research software"
 authors = [{name = "Jiaqi Xin"}]
 readme = "README.md"
