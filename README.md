@@ -12,6 +12,23 @@ Several research workflows currently maintain separate structure readers and coo
 
 ## Current API
 
+Version 0.0.3 adds certified two-periodic minimum images and a Cartesian plane
+frame. `minimum_image_in_plane(vectors, lattice)` returns residual vectors and
+integer images in the original a,b basis. It never wraps the third direction.
+Gauss reduction followed by a singular-value search bound handles skew cells
+and large unimodular rebases; invalid or ill-conditioned planes fail explicitly.
+
+```python
+from materials_structure_core import minimum_image_in_plane, plane_frame
+shortest, images = minimum_image_in_plane([[2.793, 0.637, 0]],
+    [[3, 0, 0], [2.7, 1.3, 0], [0, 0, 20]])
+```
+
+The geometry API is validated against independent finite enumeration, arbitrary
+rotation, an unreduced integer basis, and nonperiodic displacement. It is a
+geometric primitive, not a bonding or layer-identification model. Windows
+checkouts preserve byte-pinned structure fixtures through `.gitattributes`.
+
 ```python
 from materials_structure_core import StructureRecord
 
